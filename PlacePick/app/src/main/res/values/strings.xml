@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">PlacePick</string>
+
+    <!--Bottom bar item-->
+    <string name="nav_home">홈</string>
+    <string name="nav_board">게시판</string>
+    <string name="nav_map">지도</string>
+    <string name="nav_mypage">마이페이지</string>
+
+    <!--Main-->
+    <string name="app_title">플레이스픽</string>
 </resources>
