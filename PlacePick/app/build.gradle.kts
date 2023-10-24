@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.kauproject.placepick"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.kauproject.placepick"
-        minSdk = 24
-        targetSdk = 33
+        minSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
