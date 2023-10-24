@@ -15,12 +15,6 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    // 최초 생성 시에만 초기화하기 위해 선언
-    private var homeFragment: HomeFragment? = null
-    private var boardFragment: BoardFragment? = null
-    private var mapFragment: BoardFragment? = null
-    private var mypageFragment: MypageFragment? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
