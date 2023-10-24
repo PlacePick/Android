@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "258132001971",
+    "project_id": "kau-android",
+    "storage_bucket": "kau-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258132001971:android:9ce690973d1365722bdcc6",
+        "android_client_info": {
+          "package_name": "com.kauproject.placepick"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8aJOgiMF6-Ke7SZZA0F3mNqmFldFdaDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
