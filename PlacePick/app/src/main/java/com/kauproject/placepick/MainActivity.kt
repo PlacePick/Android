@@ -42,12 +42,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // 처음 프래그먼트 지정 (초기화)
     private fun initFragment(){
         val transaction = supportFragmentManager.beginTransaction()
             .add(R.id.fl_main, HomeFragment())
         transaction.commit()
     }
 
+    // Fragment 확장함수
     private fun Fragment.changeFragment(){
         supportFragmentManager.beginTransaction().replace(R.id.fl_main, this).commit()
 
