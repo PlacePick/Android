@@ -9,7 +9,7 @@ import com.kauproject.placepick.databinding.FragmentMypageBinding
 
 class MypageFragment: Fragment() {
     private var _binding: FragmentMypageBinding? = null
-    val binding
+    private val binding
         get() = _binding!!
 
     override fun onCreateView(

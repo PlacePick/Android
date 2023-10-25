@@ -9,7 +9,7 @@ import com.kauproject.placepick.databinding.FragmentMapBinding
 
 class MapFragment: Fragment() {
     private var _binding: FragmentMapBinding? = null
-    val binding
+    private val binding
         get() = _binding!!
 
     override fun onCreateView(
