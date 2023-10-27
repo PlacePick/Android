@@ -1,14 +1,14 @@
-package com.kauproject.placepick.mypage
+package com.kauproject.placepick.ui.board
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.kauproject.placepick.databinding.FragmentMypageBinding
+import com.kauproject.placepick.databinding.FragmentBoardBinding
 
-class MypageFragment: Fragment() {
-    private var _binding: FragmentMypageBinding? = null
+class BoardFragment: Fragment() {
+    private var _binding: FragmentBoardBinding? = null
     private val binding
         get() = _binding!!
 
@@ -17,7 +17,7 @@ class MypageFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMypageBinding.inflate(inflater, container, false)
+        _binding = FragmentBoardBinding.inflate(inflater, container, false)
         return binding.root
     }
 

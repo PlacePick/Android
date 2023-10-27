@@ -1,4 +1,4 @@
-package com.kauproject.placepick.home
+package com.kauproject.placepick.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

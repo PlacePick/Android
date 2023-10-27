@@ -1,4 +1,4 @@
-package com.kauproject.placepick.map
+package com.kauproject.placepick.ui.map
 
 import android.os.Bundle
 import android.view.LayoutInflater

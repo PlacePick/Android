@@ -1,13 +1,14 @@
-package com.kauproject.placepick
+package com.kauproject.placepick.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.kauproject.placepick.board.BoardFragment
+import com.kauproject.placepick.R
+import com.kauproject.placepick.ui.board.BoardFragment
 import com.kauproject.placepick.databinding.ActivityMainBinding
-import com.kauproject.placepick.home.HomeFragment
-import com.kauproject.placepick.map.MapFragment
-import com.kauproject.placepick.mypage.MypageFragment
+import com.kauproject.placepick.ui.home.HomeFragment
+import com.kauproject.placepick.ui.map.MapFragment
+import com.kauproject.placepick.ui.mypage.MypageFragment
 
 class MainActivity : AppCompatActivity() {
 

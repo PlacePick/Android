@@ -9,4 +9,22 @@
 
     <!--Main-->
     <string name="app_title">플레이스픽</string>
+    
+    <!--Hot Place-->
+    <string name="place_Itaewon">이태원역</string>
+    <string name="place_gangnam">강남역</string>
+    <string name="place_konkuk">건대입구역</string>
+    <string name="place_gyodae">교대역</string>
+    <string name="place_ttukseom">뚝섬역</string>
+    <string name="place_seoul">서울역</string>
+    <string name="place_nonhyoen">논현역</string>
+    <string name="place_sinchon">신촌·이대역</string>
+    <string name="place_hoegi">회기역</string>
+    <string name="place_yeonnam">연남동</string>
+    <string name="place_yongnidam">용리단길</string>
+    <string name="place_haebangchon">해방촌</string>
+    <string name="place_yeouido">여의도한강공원</string>
+    <string name="place_seongsu">성수카페거리</string>
+    <string name="place_children">어린이대공원</string>
+    <string name="place_dmc">DMC</string>
 </resources>
