@@ -55,4 +55,25 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
+    // Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation ("com.squareup.moshi:moshi-kotlin:1.12.0")
+
+    // Okhttp
+    implementation ("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+    // Coroutine
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Data store
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+
+    // ViewModel
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2")
+    implementation ("androidx.activity:activity-ktx:1.8.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation ("androidx.fragment:fragment-ktx:1.6.1")
+
 }
