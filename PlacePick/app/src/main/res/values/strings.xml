@@ -27,4 +27,7 @@
     <string name="place_seongsu">성수카페거리</string>
     <string name="place_children">어린이대공원</string>
     <string name="place_dmc">DMC</string>
+
+    <!--Board-->
+    <string name="board_state_good">여유</string>
 </resources>

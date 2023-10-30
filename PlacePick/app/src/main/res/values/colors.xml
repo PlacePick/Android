@@ -7,4 +7,8 @@
     <!-- App Base Color-->
     <color name="main_color">#39BCF4</color>
     <color name="gray">#6B6B6B</color>
+
+    <!-- Board Color-->
+    <color name="board_state_good">#11D81B</color>
+    <color name="board_state_bad">#D50707</color>
 </resources>
