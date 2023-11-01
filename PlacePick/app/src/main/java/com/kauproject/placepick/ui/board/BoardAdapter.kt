@@ -9,6 +9,9 @@ import com.kauproject.placepick.databinding.ItemBoardBinding
 import com.kauproject.placepick.util.HotPlace.hotPlace
 
 class BoardAdapter: RecyclerView.Adapter<BoardAdapter.BoardHolder>() {
+    companion object{
+        const val TAG = "BoardAdapter"
+    }
     private val placeList = hotPlace
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BoardHolder {
         val binding = ItemBoardBinding.inflate(
@@ -24,14 +27,14 @@ class BoardAdapter: RecyclerView.Adapter<BoardAdapter.BoardHolder>() {
         holder.setPlace(place)
 
         holder.binding.llBoard.setOnClickListener {
-            Log.d("TEST", "$place")
+            Log.d(TAG, place)
         }
 
     }
 
     override fun getItemCount() = hotPlace.size
 
-    class BoardHolder(val binding: ItemBoardBinding): RecyclerView.ViewHolder(binding.root){
+    inner class BoardHolder(val binding: ItemBoardBinding): RecyclerView.ViewHolder(binding.root){
         fun setPlace(place: String){
             binding.tvPlace.text = place
         }
