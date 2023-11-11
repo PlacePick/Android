@@ -7,6 +7,21 @@
     <string name="nav_map">지도</string>
     <string name="nav_mypage">마이페이지</string>
 
+    <!--Setting-->
+    <string name="setting_title">반가워요!</string>
+    <string name="setting_hint_nick">닉네임을 입력하세요.</string>
+    <string name="setting_hint_place">핫플레이스를 선택하세요.</string>
+    <string name="setting_complete">완료</string>
+    <string name="setting_place_title">최대 3개까지 선택가능합니다.</string>
+    <string name="setting_place_subtitle">*추후에 수정가능</string>
+
+    <!--Login-->
+    <string name="login_hint_id">아이디를 입력하세요.</string>
+    <string name="login_hint_password">비밀번호를 입력하세요.</string>
+    <string name="login_sign_in">회원가입</string>
+    <string name="login_naver">네이버로 시작하기</string>
+    <string name="login_subtitle">핫플레이스를 한번에,</string>
+
     <!--Main-->
     <string name="app_title">플레이스픽</string>
     
