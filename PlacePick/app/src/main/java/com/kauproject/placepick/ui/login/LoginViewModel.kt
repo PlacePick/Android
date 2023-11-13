@@ -2,22 +2,21 @@ package com.kauproject.placepick.ui.login
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kauproject.placepick.model.FirebaseInstance
-import com.kauproject.placepick.model.data.User
+import com.kauproject.placepick.model.repository.LoginRepository
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
     val context: Context,
+    private val loginRepository: LoginRepository
 ): ViewModel() {
     companion object{
         const val TAG = "LoginViewModel"
@@ -25,10 +24,12 @@ class LoginViewModel(
         const val NAVER_SECRET_KEY = "zVr8P_1j35"
     }
 
-    private val _userNum = MutableStateFlow<String?>(null)
-    val userNum = _userNum.asStateFlow()
-    private val _isMember = MutableStateFlow<Boolean?>(null)
-    val isMember = _isMember.asStateFlow()
+    private val _userNum = MutableLiveData<String?>()
+    val userNum: LiveData<String?>
+        get() = _userNum
+    private val _isMember = MutableLiveData<Boolean?>()
+    val isMember: LiveData<Boolean?>
+        get() = _isMember
 
     private lateinit var oAuthLoginCallback: OAuthLoginCallback
 
@@ -87,7 +88,7 @@ class LoginViewModel(
     fun checkMember(userNum: String?){
         viewModelScope.launch{
             userNum?.let {
-                _isMember.value = FirebaseInstance.isMember(userNum)
+                _isMember.value = loginRepository.isMember(userNum)
             }
         }
     }

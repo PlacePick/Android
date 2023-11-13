@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.kauproject.placepick.databinding.ActivitySettingBinding
 import com.kauproject.placepick.model.DataStore
+import com.kauproject.placepick.model.repository.LoginRepository
 import com.kauproject.placepick.ui.MainActivity
 
 class SettingActivity: AppCompatActivity() {
@@ -14,11 +15,13 @@ class SettingActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         val dataStore = DataStore(this@SettingActivity)
+        val loginRepository = LoginRepository()
 
         val intent = intent
         val userNum = intent.getStringExtra("userNum")
-        val viewModel = SettingViewModel(dataStore)
+        val viewModel = SettingViewModel(dataStore, loginRepository)
 
         // userNum 세팅
         userNum?.let {

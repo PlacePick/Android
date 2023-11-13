@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kauproject.placepick.databinding.ActivityHotplaceBinding
 import com.kauproject.placepick.model.DataStore
+import com.kauproject.placepick.model.repository.LoginRepository
 
 class SettingHotPlaceActivity: AppCompatActivity() {
     private val binding: ActivityHotplaceBinding by lazy {
@@ -14,7 +15,8 @@ class SettingHotPlaceActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val dataStore = DataStore(this@SettingHotPlaceActivity)
-        val viewModel = SettingViewModel(dataStore)
+        val loginRepository = LoginRepository()
+        val viewModel = SettingViewModel(dataStore, loginRepository)
 
         initView()
 

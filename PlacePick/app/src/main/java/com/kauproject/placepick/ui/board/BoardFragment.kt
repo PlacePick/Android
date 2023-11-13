@@ -4,36 +4,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kauproject.placepick.databinding.FragmentBoardBinding
+import com.kauproject.placepick.model.repository.BoardRepository
+import com.kauproject.placepick.ui.MainViewModel
+import com.kauproject.placepick.util.BaseFragment
 
-class BoardFragment: Fragment() {
-    private var _binding: FragmentBoardBinding? = null
-    private val binding
-        get() = _binding!!
+class BoardFragment: BaseFragment<FragmentBoardBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentBoardBinding.inflate(inflater, container, false)
-        return binding.root
+    companion object{
+        fun newInstance(): BoardFragment = BoardFragment()
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+        val viewModel: MainViewModel by activityViewModels()
+        val boardRepository = BoardRepository()
 
-    private fun initView(){
         binding.rvBoard.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.rvBoard.adapter = BoardAdapter()
+        binding.rvBoard.adapter = BoardAdapter(
+            postDetail = { viewModel.setDetailList(it) },
+            boardRepository
+        )
+
+    }
+
+    override fun getFragmentBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentBoardBinding {
+        return FragmentBoardBinding.inflate(inflater, container, false)
     }
 }

@@ -1,19 +1,15 @@
 package com.kauproject.placepick.ui.setting
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kauproject.placepick.model.DataStore
-import com.kauproject.placepick.model.FirebaseInstance
-import com.kauproject.placepick.model.data.User
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import com.kauproject.placepick.model.repository.LoginRepository
 import kotlinx.coroutines.launch
 
 class SettingViewModel(
-    private val dataStore: DataStore
+    private val dataStore: DataStore,
+    private val loginRepository: LoginRepository
 ): ViewModel() {
     companion object{
         const val TAG = "SettingViewModel"
@@ -43,7 +39,7 @@ class SettingViewModel(
 
     fun complete(){
         viewModelScope.launch {
-            FirebaseInstance.signUp(dataStore.getUserData())
+            loginRepository.signUp(dataStore.getUserData())
             Log.d(TAG, "${dataStore.getUserData()}")
         }
     }
