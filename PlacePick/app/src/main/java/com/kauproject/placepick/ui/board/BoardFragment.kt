@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kauproject.placepick.databinding.FragmentBoardBinding
+import com.kauproject.placepick.model.repository.BoardRepository
 import com.kauproject.placepick.ui.MainViewModel
 import com.kauproject.placepick.util.BaseFragment
 
@@ -19,10 +20,12 @@ class BoardFragment: BaseFragment<FragmentBoardBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel: MainViewModel by activityViewModels()
+        val boardRepository = BoardRepository()
 
         binding.rvBoard.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvBoard.adapter = BoardAdapter(
-            postDetail = { viewModel.setDetailList(it) }
+            postDetail = { viewModel.setDetailList(it) },
+            boardRepository
         )
 
     }

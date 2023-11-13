@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kauproject.placepick.databinding.ItemBoardBinding
 import com.kauproject.placepick.model.data.Post
+import com.kauproject.placepick.model.repository.BoardRepository
 import com.kauproject.placepick.util.HotPlace.hotPlace
 
 class BoardAdapter(
     val postDetail: (List<Post>) -> Unit,
+    val boardRepository: BoardRepository
 ) : RecyclerView.Adapter<BoardAdapter.BoardHolder>() {
     companion object{
         const val TAG = "BoardAdapter"
