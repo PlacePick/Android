@@ -1,14 +1,15 @@
 package com.kauproject.placepick.ui.board
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kauproject.placepick.databinding.ItemBoardBinding
+import com.kauproject.placepick.model.data.Post
 import com.kauproject.placepick.util.HotPlace.hotPlace
 
-class BoardAdapter: RecyclerView.Adapter<BoardAdapter.BoardHolder>() {
+class BoardAdapter(
+    val postDetail: (List<Post>) -> Unit,
+) : RecyclerView.Adapter<BoardAdapter.BoardHolder>() {
     companion object{
         const val TAG = "BoardAdapter"
     }
@@ -27,7 +28,7 @@ class BoardAdapter: RecyclerView.Adapter<BoardAdapter.BoardHolder>() {
         holder.setPlace(place)
 
         holder.binding.llBoard.setOnClickListener {
-            Log.d(TAG, place)
+
         }
 
     }
