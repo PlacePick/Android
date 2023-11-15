@@ -11,6 +11,7 @@ import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.FragmentHomeBinding
 import com.kauproject.placepick.model.repository.ChatListRepository
 import com.kauproject.placepick.ui.chat.ChatFragment
+import com.kauproject.placepick.util.HotPlace
 
 class HomeFragment : Fragment() {
 
@@ -29,40 +30,27 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val btnRealtimeInput = binding.btnRealtimeInput
-        val btnChoice1 = binding.btnChoice1
-        val btnChoice2 = binding.btnChoice2
-        val btnChoice3 = binding.btnChoice3
-
-        btnChoice1.setOnClickListener {
-            navigateToChatFragment("이태원역")
-        }
-
-        btnChoice2.setOnClickListener {
-            navigateToChatFragment("서울역")
-        }
-
-        btnChoice3.setOnClickListener {
-            navigateToChatFragment("강남역")
-        }
-
         btnRealtimeInput.setOnClickListener {
-            navigateToChatFragment("서울역")
+            val chatFragment = ChatFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fl_main, chatFragment)
+                .addToBackStack(null) // 백 스택에 추가 (뒤로 가기 버튼으로 홈 화면으로 돌아갈 수 있게 함)
+                .commit()
         }
 
-    }
-
-    private fun navigateToChatFragment(chatId: String) {
-        val chatFragment = ChatFragment()
-        val bundle = Bundle()
-        bundle.putString("chatId", chatId)
-        chatFragment.arguments = bundle
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fl_main, chatFragment)
-            .addToBackStack(null)
-            .commit()
 
     }
+
+
+
+    private fun addHotPlacesToChatList() {
+        val hotPlaces = HotPlace.hotPlace
+
+        val chatListRepository = ChatListRepository()
+
+        chatListRepository.addHotPlacesToChatList(hotPlaces)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

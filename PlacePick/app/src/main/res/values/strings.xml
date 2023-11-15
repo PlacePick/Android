@@ -50,4 +50,11 @@
     <string name="board_detail_title">제목</string>
     <string name="board_detail_content_summary">본문 요약</string>
     <string name="board_detail_date">작성 날짜</string>
+    <string name="board_detail_write">글쓰기</string>
+
+    <!--Board Detail Write-->
+    <string name="write_title">글 쓰기</string>
+    <string name="write_hint_title">제목</string>
+    <string name="write_hint_content">내용을 입력하세요.</string>
+    <string name="write_post">게시</string>
 </resources>

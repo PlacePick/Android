@@ -1,86 +1,54 @@
 package com.kauproject.placepick.model.repository
 
-import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.kauproject.placepick.model.FireBaseInstance.database
-import com.kauproject.placepick.ui.chat.ChatAdapter
-import com.kauproject.placepick.ui.chat.ChatMessage
+import com.kauproject.placepick.model.FireBaseInstance
+import com.kauproject.placepick.model.data.Message
 class ChatListRepository {
+    private val database = FireBaseInstance.database
+    private val chatListRef = database.getReference("chatList")
 
-    // 여러 채팅 아이디에 대해 채팅 방을 생성하는 메서드
-    fun createChatRooms(chatIds: List<String>) {
-        for (chatId in chatIds) {
-            createChatRoom(chatId)
+    // hotplace 리스트를 받아와서 Firebase에 추가하는 함수
+    fun addHotPlacesToChatList(hotPlaces: List<String>) {
+        for (hotPlace in hotPlaces) {
+            // hotPlace를 키로 하는 "chatList"의 하위 레퍼런스 생성
+            val chatListDetailRef = chatListRef.child(hotPlace)
+
+            // hotPlace에 대한 message 객체 생성 (원하는 속성으로 변경 가능)
+            val messages = Message("샘플유저", "샘플메시지", 131231312, hotPlace)
+
+            // hotPlace에 해당하는 데이터를 Firebase에 추가
+            chatListDetailRef.setValue(messages)
         }
     }
 
-    // 단일 채팅 아이디에 대해 채팅 방을 생성하는 메서드
-    private fun createChatRoom(chatId: String) {
-        try {
-            // Firebase Realtime Database에서 "chatList" 경로에 있는 특정 채팅 아이디의 하위 레퍼런스를 가져옴
-            val chatRef = database.getReference("chatList").child(chatId)
+    fun addChatList(
+        board: String,
+        titleCallback: (String) -> Unit,
+        detail: (List<Message>) -> Unit
+    ) {
+        val chatListDetailRef = chatListRef.child(board)
+        val detailList = mutableListOf<Message>()
 
-            // 생성된 채팅 방의 초기 데이터로 빈 메시지 목록을 가지는 맵을 생성
-            val chatData = mapOf(
-                "messages" to emptyList<ChatMessage>()
-            )
+        // 추가: 채팅 목록의 제목을 콜백으로 전달
+        titleCallback(board)
 
-            // 채팅 방 레퍼런스에 초기 데이터를 설정하고, 설정이 완료되면 콜백이 호출됨
-            chatRef.setValue(chatData)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("ChatListRepository", "Chat room created successfully")
-                    } else {
-                        // 채팅 방 생성 중 오류가 발생한 경우 에러 로그를 출력
-                        Log.e("ChatListRepository", "Error creating chat room", task.exception)
-                    }
-                }
-        } catch (e: Exception) {
-            // 예외가 발생한 경우 에러 로그를 출력
-            Log.e("ChatListRepository", "Exception occurred in createChatRoom", e)
-        }
-    }
-
-    fun getChatMessages(chatId: String, chatAdapter: ChatAdapter) {
-        // Firebase에서 해당 chatId의 메시지를 가져오는 로직을 구현합니다.
-        // ChatMessage 객체의 목록을 반환합니다.
-        val messages = mutableListOf<ChatMessage>()
-
-        // chatId에 해당하는 채팅방의 messages 하위 노드에서 데이터 가져오기
-        val chatRef = database.getReference("chatList").child(chatId).child("messages")
-
-        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        chatListDetailRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (messageSnapshot in snapshot.children) {
-                    val messageData = messageSnapshot.getValue(ChatMessage::class.java)
-                    messageData?.let {
-                        messages.add(it)
+                for (item in snapshot.children) {
+                    item.getValue(Message::class.java)?.let { message ->
+                        // Message 객체에 board 식별자 추가
+                        message.board = board
+                        detailList.add(message)
                     }
                 }
-                // 데이터 변경이 있을 때마다 어댑터에 알리기
-                chatAdapter.notifyDataSetChanged()
+                detail(detailList)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // 실패 시 처리
+                detail(emptyList())
             }
         })
     }
-
-
-    // 채팅방 목록 가져오기
-    fun getChatRooms(): List<String> {
-        // Firebase에서 채팅방 목록을 가져오는 로직을 구현합니다.
-        // 채팅방의 ID 목록을 반환합니다.
-        return listOf("이태원역", "서울역", "강남역")
-    }
-
-    fun getDynamicChatRooms(): List<String> {
-        return listOf("강남역", "이태원역", "서울역")
-    }
-
 }
