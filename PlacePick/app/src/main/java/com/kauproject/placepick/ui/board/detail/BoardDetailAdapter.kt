@@ -6,9 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kauproject.placepick.databinding.ItemBoardDetailBinding
 import com.kauproject.placepick.model.data.Post
 
-class BoardDetailAdapter(
-    private val detailList: MutableList<Post>
-): RecyclerView.Adapter<BoardDetailAdapter.BoardDetailHolder>() {
+class BoardDetailAdapter: RecyclerView.Adapter<BoardDetailAdapter.BoardDetailHolder>() {
+    private var detailList = emptyList<Post>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BoardDetailHolder {
         val binding = ItemBoardDetailBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -31,6 +30,10 @@ class BoardDetailAdapter(
             binding.tvContent.text = detail.content
             binding.tvDate.text = detail.date
         }
+    }
 
+    fun updateList(list: List<Post>){
+        detailList = list
+        notifyDataSetChanged()
     }
 }

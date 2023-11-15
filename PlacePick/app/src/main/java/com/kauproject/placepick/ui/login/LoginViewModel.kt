@@ -33,7 +33,7 @@ class LoginViewModel(
 
     private lateinit var oAuthLoginCallback: OAuthLoginCallback
 
-    fun naverSetOAuthLoginCallback(updateToken: (String) -> Unit){
+    private fun naverSetOAuthLoginCallback(updateToken: (String) -> Unit){
         oAuthLoginCallback = object : OAuthLoginCallback{
             override fun onError(errorCode: Int, message: String) {
                 onFailure(errorCode, message)
@@ -49,7 +49,7 @@ class LoginViewModel(
         }
     }
 
-    fun initNaverSDK(updateToken: (String) -> Unit){
+    private fun initNaverSDK(updateToken: (String) -> Unit){
         naverSetOAuthLoginCallback { it->
             updateToken(it)
         }
