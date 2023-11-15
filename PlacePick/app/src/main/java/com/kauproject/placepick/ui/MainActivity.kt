@@ -1,10 +1,14 @@
 package com.kauproject.placepick.ui
 
+import android.opengl.Visibility
 import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.ActivityMainBinding
+import com.kauproject.placepick.model.repository.BoardRepository
 import com.kauproject.placepick.ui.board.BoardFragment
 import com.kauproject.placepick.ui.home.HomeFragment
 import com.kauproject.placepick.ui.map.MapFragment
@@ -20,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val viewModel: MainViewModel by viewModels()
+        viewModel.ex()
         initFragment()
 
         binding.bottomMain.setOnItemSelectedListener { it->
@@ -54,6 +60,17 @@ class MainActivity : AppCompatActivity() {
     private fun Fragment.changeFragment(){
         supportFragmentManager.beginTransaction().replace(R.id.fl_main, this).commit()
 
+    }
+
+    // 앱 상단바, 하단바 보이기 및 숨기기
+    fun isShowView(show: Boolean){
+        if(show){
+            binding.llMain.visibility = View.VISIBLE
+            binding.bottomMain.visibility = View.VISIBLE
+        }else{
+            binding.llMain.visibility = View.GONE
+            binding.bottomMain.visibility = View.GONE
+        }
     }
 
 }
