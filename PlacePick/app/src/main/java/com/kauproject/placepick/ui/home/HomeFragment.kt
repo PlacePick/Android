@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.FragmentHomeBinding
+import com.kauproject.placepick.model.repository.ChatListRepository
 import com.kauproject.placepick.ui.chat.ChatFragment
+import com.kauproject.placepick.util.HotPlace
 
 class HomeFragment : Fragment() {
 
@@ -29,16 +31,22 @@ class HomeFragment : Fragment() {
 
         val btnRealtimeInput = binding.btnRealtimeInput
         btnRealtimeInput.setOnClickListener {
-            val chatFragment = ChatFragment()
+            val chatFragment = ChatFragment.newInstance("강남역")
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fl_main, chatFragment)
                 .addToBackStack(null) // 백 스택에 추가 (뒤로 가기 버튼으로 홈 화면으로 돌아갈 수 있게 함)
                 .commit()
         }
+
+
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
+
+
