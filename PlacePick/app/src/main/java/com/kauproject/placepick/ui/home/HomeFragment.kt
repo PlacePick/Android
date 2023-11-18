@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.FragmentHomeBinding
-import com.kauproject.placepick.model.repository.ChatListRepository
+import com.kauproject.placepick.model.DataStore
 import com.kauproject.placepick.ui.chat.ChatFragment
-import com.kauproject.placepick.util.HotPlace
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -29,24 +29,46 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnRealtimeInput = binding.btnRealtimeInput
-        btnRealtimeInput.setOnClickListener {
-            val chatFragment = ChatFragment.newInstance("강남역")
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fl_main, chatFragment)
-                .addToBackStack(null) // 백 스택에 추가 (뒤로 가기 버튼으로 홈 화면으로 돌아갈 수 있게 함)
-                .commit()
+        lifecycleScope.launch {
+            val btnChoice1 = binding.btnChoice1
+            val btnChoice2 = binding.btnChoice2
+            val btnChoice3 = binding.btnChoice3
+
+            val userData = DataStore(requireContext()).getUserData()
+
+            btnChoice1.text = userData.place1 ?: ""
+            btnChoice2.text = userData.place2 ?: ""
+            btnChoice3.text = userData.place3 ?: ""
+
+            btnChoice1.setOnClickListener {
+                launchHandleButtonClick((it as Button).text.toString(), userData.place1 ?: "")
+            }
+
+            btnChoice2.setOnClickListener {
+                launchHandleButtonClick((it as Button).text.toString(), userData.place2 ?: "")
+            }
+
+            btnChoice3.setOnClickListener {
+                launchHandleButtonClick((it as Button).text.toString(), userData.place3 ?: "")
+            }
         }
-
-
     }
 
+    private fun launchHandleButtonClick(selectedPlace: String, placeData: String) {
+        lifecycleScope.launch {
+            handleButtonClick(selectedPlace, placeData)
+        }
+    }
 
+    private suspend fun handleButtonClick(selectedPlace: String, placeData: String) {
+        val chatFragment = ChatFragment.newInstance(selectedPlace, placeData)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fl_main, chatFragment)
+            .commit()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-
-

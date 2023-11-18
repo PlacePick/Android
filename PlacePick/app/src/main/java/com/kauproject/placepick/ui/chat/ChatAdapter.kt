@@ -14,7 +14,6 @@ import java.util.Locale
 class ChatAdapter(
     private val messages: List<Message>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    //?
 
     companion object {
         const val VIEW_TYPE_MINE = 1

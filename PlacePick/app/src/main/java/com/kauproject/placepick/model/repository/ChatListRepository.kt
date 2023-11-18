@@ -31,7 +31,37 @@ class ChatListRepository {
         // 메시지를 Firebase에 추가
         messageRef.setValue(message)
     }
+    suspend fun getMessagesForChatRoom(board: String): List<Message> {
+        val messages = mutableListOf<Message>()
+
+        // 해당 방의 이전 메시지를 가져오는 로직을 Firebase에서 구현
+        val chatRoomRef = chatListRef.child(board)
+        val query = chatRoomRef.limitToLast(50) // 마지막 50개의 메시지만 가져오도록 설정
+
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (messageSnapshot in snapshot.children) {
+                    val message = messageSnapshot.getValue(Message::class.java)
+                    if (message != null) {
+                        messages.add(message)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // 오류 처리를 여기에 추가할 수 있습니다.
+            }
+        }
+
+        // ValueEventListener를 사용하여 데이터 변경을 감지
+        query.addListenerForSingleValueEvent(valueEventListener)
+
+        return messages
+    }
+
 
 
 }
+
+
 
