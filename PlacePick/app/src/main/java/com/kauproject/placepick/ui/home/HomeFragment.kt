@@ -57,20 +57,20 @@ class HomeFragment : Fragment() {
 
             btnChoice1.setOnClickListener {
                 launchHandleButtonClick(btnChoice1.text.toString(), userData.place1 ?: "")
-                btn_realtime_input.text = "${userData.place1 ?: ""} 실시간 채팅방 들어가기"
+                btn_realtime_input.text = userData.place1 ?: ""
                 onButtonClicked(btnChoice1, userData.place1 ?: "")
 
             }
 
             btnChoice2.setOnClickListener {
                 launchHandleButtonClick(btnChoice2.text.toString(), userData.place2 ?: "")
-                btn_realtime_input.text = "${userData.place2 ?: ""} 실시간 채팅방 들어가기"
+                btn_realtime_input.text = userData.place2 ?: ""
                 onButtonClicked(btnChoice2, userData.place2 ?: "")
             }
 
             btnChoice3.setOnClickListener {
                 launchHandleButtonClick(btnChoice3.text.toString(), userData.place3 ?: "")
-                btn_realtime_input.text = "${userData.place3 ?: ""} 실시간 채팅방 들어가기"
+                btn_realtime_input.text = userData.place3 ?: ""
                 onButtonClicked(btnChoice3, userData.place3 ?: "")
             }
 

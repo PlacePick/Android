@@ -50,14 +50,25 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
             val messageContent = binding.edtMessage.text.toString().trim()
 
             if (messageContent.isNotEmpty()) {
-                val senderId = "사용자 고유 식별자" // 사용자 고유 식별자를 지정해야 합니다.
+//                val senderId = "사용자 고유 식별자" // 사용자 고유 식별자를 지정해야 합니다.
                 val timestamp = System.currentTimeMillis() // 현재 시간을 가져와서 사용합니다.
                 lifecycleScope.launch { // lifecycleScope를 사용하여 코루틴 블록 시작
 
                     // DataStore에서 사용자 데이터 가져오기
                     val placeData = arguments?.getString(ARG_PLACE_DATA) ?: ""
                     val board = placeData
-//
+                    val userData = DataStore(requireContext()).getUserData()
+                    val senderId  = userData.nickName ?: ""
+                    val nickName = userData.nickName ?: ""
+                    val selectedHotPlace = binding.txtTitle.text.toString()
+
+
+                    // ChatListRepository를 이용하여 특정 채팅방의 메시지를 가져오기
+                    val chatListRepository = ChatListRepository()
+                    val chatMessages = chatListRepository.getMessagesForChatRoom(selectedHotPlace, nickName)
+                    messages.addAll(chatMessages)
+                    chatAdapter.notifyDataSetChanged()
+
 
                     val newMessage = Message(senderId, messageContent, timestamp, board, true)
 
@@ -65,7 +76,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
                     chatAdapter.notifyItemInserted(messages.size - 1)
 
                     // Firebase에 메시지 추가
-                    addMessageToFirebase(newMessage)
+                    addMessageToFirebase(newMessage, nickName, selectedHotPlace)
 
                     // 메시지를 입력한 후 EditText 초기화
                     binding.edtMessage.text.clear()
@@ -87,11 +98,10 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
     }
 
     // Firebase에 메시지를 추가하는 함수
-    private fun addMessageToFirebase(message: Message) {
+    private suspend fun addMessageToFirebase(message: Message, nickName: String, selectedHotPlace: String) {
         val chatListRepository = ChatListRepository()
-        chatListRepository.addMessageToChatList(message)
+        chatListRepository.addMessageToChatList(message, nickName, selectedHotPlace)
     }
-
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

@@ -60,6 +60,7 @@ class ChatAdapter(
 
     class ChatMineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindMine(message: Message) {
+            itemView.findViewById<TextView>(R.id.mine_txt_message).text = if (message.senderId == "jsj") message.content else message.senderId
             itemView.findViewById<TextView>(R.id.mine_txt_message).text = message.content
             itemView.findViewById<TextView>(R.id.mine_txt_date).text =
                 convertTimestampToDate(message.timestamp)
@@ -96,4 +97,3 @@ class ChatAdapter(
 
     }
 }
-
