@@ -18,14 +18,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/imgbtn_quit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:text="나가기"
-        android:background="@drawable/button_bg"
+        android:src="@drawable/ic_smile"
         android:checkable="true"
         app:layout_constraintBottom_toBottomOf="@+id/txt_Title"
         app:layout_constraintStart_toStartOf="parent"
