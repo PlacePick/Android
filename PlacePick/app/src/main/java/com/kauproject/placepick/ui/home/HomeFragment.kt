@@ -44,8 +44,7 @@ class HomeFragment : Fragment() {
             val btnChoice3 = binding.btnChoice3
             val btn_setting = binding.btnSetting
             val btn_realtime_input = binding.btnRealtimeInput
-            val apidata1 = binding.apidata1
-            val apidata2 = binding.apidata2
+
 
 
             val userData = DataStore(requireContext()).getUserData()
@@ -143,6 +142,9 @@ class HomeFragment : Fragment() {
 
         val ppltntime = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNTIME
         val areaCongestlvl = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.aREACONGESTLVL
+        val x =  response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.fCSTPPLTN?.firstOrNull()?.fCSTCONGESTLVL
+        val y =  response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.fCSTPPLTN?.firstOrNull()?.fCSTTIME
+
         val smileImageResource = R.drawable.ic_smile
         val frownImageResource = R.drawable.ic_frown
         val angerImageResource = R.drawable.ic_angle
@@ -151,12 +153,14 @@ class HomeFragment : Fragment() {
         val imageView = binding.imageView
 
 
-//            val fcsttime = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.fCSTTIME
 
         binding.textView1.text = maxPpltnRateMessage
         binding.textView4.text = formattedAreaCongestMsg
-        binding.apidata1.text = ppltntime ?: "데이터를 불러오지 못했습니다."
-        binding.apidata2.text =  areaCongestlvl  ?: "데이터를 불러오지 못했습니다."
+        binding.apidata1.text = x ?: "데이터를 불러오지 못했습니다."
+        binding.apidata2.text = y ?: "데이터를 불러오지 못했습니다."
+
+//        binding.apidata1.text = ppltntime ?: "데이터를 불러오지 못했습니다."
+        binding.apidata3.text =  areaCongestlvl  ?: "데이터를 불러오지 못했습니다."
         // areaCongestlvl 값에 따라 이미지 변경
         when (areaCongestlvl) {
             "여유" -> imageView.setImageResource(smileImageResource)
