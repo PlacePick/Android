@@ -32,7 +32,7 @@ class MainViewModel(
                 retrofit.create(GetHotPlaceInfoService::class.java).getHotPlaceInfo("서울역")
             val statusCode = response.code()
             if(statusCode == 200){
-                Log.d(TAG, "RESPONSE:${response.body()}")
+                Log.d(TAG, "RESPONSE:${response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.fCSTPPLTN?.firstOrNull()?.fCSTCONGESTLVL}")
             }else{
                 Log.d(TAG, "ERROR:${response.code()} ${response.errorBody()}")
             }

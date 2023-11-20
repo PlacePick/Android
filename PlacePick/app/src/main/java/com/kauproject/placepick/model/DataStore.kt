@@ -24,9 +24,9 @@ class DataStore(
     companion object{
         private val NUM_KEY = stringPreferencesKey("num")
         private val NICK_KEY = stringPreferencesKey("nick")
-        private val PLACE_FIRST_KEY = stringPreferencesKey("first")
-        private val PLACE_SECOND_KEY = stringPreferencesKey("second")
-        private val PLACE_THIRD_KEY = stringPreferencesKey("third")
+        private val PLACE_FIRST_KEY = stringPreferencesKey("first") // 첫번째 핫플
+        private val PLACE_SECOND_KEY = stringPreferencesKey("second") // 두번째 핫플
+        private val PLACE_THIRD_KEY = stringPreferencesKey("third") // 세번째 핫플
     }
 
     // 유저데이터 조회
