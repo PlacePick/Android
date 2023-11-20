@@ -111,14 +111,14 @@ class HomeFragment : Fragment() {
         val response = RetrofitInstance.retrofit.create(GetHotPlaceInfoService::class.java)
             .getHotPlaceInfo(selectedPlace)
 
-        val ppltnRate0 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNRATE0?.toDoubleOrNull() ?: 0
-        val ppltnRate10 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNRATE10?.toDoubleOrNull() ?: 0
-        val ppltnRate20 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNRATE20?.toDoubleOrNull() ?: 0
-        val ppltnRate30 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNRATE30?.toDoubleOrNull() ?: 0
-        val ppltnRate40 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNRATE40?.toDoubleOrNull() ?: 0
-        val ppltnRate50 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNRATE50?.toDoubleOrNull() ?: 0
-        val ppltnRate60 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNRATE60?.toDoubleOrNull() ?: 0
-        val ppltnRate70 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNRATE70?.toDoubleOrNull() ?: 0
+        val ppltnRate0 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate0?.toDoubleOrNull() ?: 0
+        val ppltnRate10 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate10?.toDoubleOrNull() ?: 0
+        val ppltnRate20 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate20?.toDoubleOrNull() ?: 0
+        val ppltnRate30 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate30?.toDoubleOrNull() ?: 0
+        val ppltnRate40 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate40?.toDoubleOrNull() ?: 0
+        val ppltnRate50 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate50?.toDoubleOrNull() ?: 0
+        val ppltnRate60 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate60?.toDoubleOrNull() ?: 0
+        val ppltnRate70 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate70?.toDoubleOrNull() ?: 0
 
 
         //최댓값 구하는 메서드
@@ -139,14 +139,14 @@ class HomeFragment : Fragment() {
             else -> "데이터를 불러오지 못했습니다."
         }
 
-        val areaCongestMsg = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.aREACONGESTMSG
+        val areaCongestMsg = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.areaMessage
         //"."있을시 개행
         val formattedAreaCongestMsg = areaCongestMsg?.replace(".", ".\n") ?: "데이터를 불러오지 못했습니다."
 
-        val ppltntime = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.pPLTNTIME
-        val areaCongestlvl = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.aREACONGESTLVL
-        val x =  response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.fCSTPPLTN?.firstOrNull()?.fCSTCONGESTLVL
-        val y =  response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.fCSTPPLTN?.firstOrNull()?.fCSTTIME
+        val ppltntime = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.updateTime
+        val areaCongestlvl = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.areaLevel
+        val x =  response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.peoplePrediction?.firstOrNull()?.placeCognitionPrediction
+        val y =  response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.peoplePrediction?.firstOrNull()?.placePredictionTime
 
         val smileImageResource = R.drawable.ic_smile
         val frownImageResource = R.drawable.ic_frown
