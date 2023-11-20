@@ -2,6 +2,7 @@ package com.kauproject.placepick.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.FragmentHomeBinding
 import com.kauproject.placepick.model.DataStore
-import com.kauproject.placepick.model.RetrofitInstance
 import com.kauproject.placepick.model.response.GetHotPlaceInfoResponse
+import com.kauproject.placepick.model.RetrofitInstance
 import com.kauproject.placepick.model.service.GetHotPlaceInfoService
 import com.kauproject.placepick.ui.chat.ChatFragment
 import com.kauproject.placepick.ui.setting.SettingHotPlaceActivity
@@ -101,6 +102,8 @@ class HomeFragment : Fragment() {
                 .replace(R.id.fl_main, chatFragment)
                 .commit()
         }
+
+        val response = RetrofitInstance.retrofit.create(GetHotPlaceInfoService::class.java)
     }
 
     private suspend fun handleButtonClickChild(selectedPlace: String, placeData: String) {
