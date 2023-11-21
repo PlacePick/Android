@@ -1,5 +1,6 @@
 package com.kauproject.placepick.model
 
+import com.kauproject.placepick.model.service.GetHotPlaceInfoService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -10,7 +11,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 private const val BASE_URL = "http://openapi.seoul.go.kr:8088/"
 
 object RetrofitInstance {
-
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
