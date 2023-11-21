@@ -12,4 +12,5 @@
     <!-- Board Color-->
     <color name="board_state_good">#11D81B</color>
     <color name="board_state_bad">#D50707</color>
+    <color name="board_state_normal">#FF5722</color>
 </resources>

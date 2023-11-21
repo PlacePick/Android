@@ -2,6 +2,7 @@ package com.kauproject.placepick.ui.board
 
 import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kauproject.placepick.R
@@ -30,17 +32,21 @@ class BoardFragment: BaseFragment<FragmentBoardBinding>() {
         super.onViewCreated(view, savedInstanceState)
         val viewModel: MainViewModel by activityViewModels()
         val mainActivity = activity as MainActivity
+        val boardAdapter = BoardAdapter(onBoardClick = {
+            viewModel.setBoard(it)
+            FragmentUtil.showFragment(requireActivity().supportFragmentManager, BoardDetailFragment(), BoardDetailFragment.TAG)
+            mainActivity.isShowView(false)
+        })
 
         mainActivity.isShowView(true)
+        viewModel.getPlaceStatus()
+
+        viewModel.placeState.observe(viewLifecycleOwner, Observer {
+            boardAdapter.updateState(it)
+        })
 
         binding.rvBoard.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.rvBoard.adapter = BoardAdapter(
-            onBoardClick = {
-                viewModel.setBoard(it)
-                FragmentUtil.showFragment(requireActivity().supportFragmentManager, BoardDetailFragment(), BoardDetailFragment.TAG)
-                mainActivity.isShowView(false)
-            }
-        )
+        binding.rvBoard.adapter = boardAdapter
     }
     override fun getFragmentBinding(
         inflater: LayoutInflater,

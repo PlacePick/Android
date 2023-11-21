@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel: MainViewModel by viewModels()
-        viewModel.ex()
         initFragment()
 
         binding.bottomMain.setOnItemSelectedListener { it->
