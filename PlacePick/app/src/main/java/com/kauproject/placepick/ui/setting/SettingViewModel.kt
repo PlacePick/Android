@@ -28,12 +28,15 @@ class SettingViewModel(
             Log.d(TAG, "${dataStore.getUserData()}")
         }
     }
-
-    fun setHotPlace(hotPlace: List<String?>){
+    fun setHotPlace(selectedPlace: List<String?>) {
         viewModelScope.launch {
-            dataStore.setUserData("first", hotPlace[0])
-            dataStore.setUserData("second", hotPlace[1])
-            dataStore.setUserData("third", hotPlace[2])
+            dataStore.setUserData("first", selectedPlace.getOrNull(0))
+            dataStore.setUserData("second", selectedPlace.getOrNull(1))
+            dataStore.setUserData("third", selectedPlace.getOrNull(2))
+
+            // Firebase에 업데이트
+            val user = dataStore.getUserData()
+            loginRepository.updateUserHotPlaces(user.userNum, user.place1, user.place2, user.place3)
         }
     }
 
