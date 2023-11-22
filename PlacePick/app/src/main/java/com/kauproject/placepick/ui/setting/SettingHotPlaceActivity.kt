@@ -1,16 +1,24 @@
 package com.kauproject.placepick.ui.setting
+
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kauproject.placepick.databinding.ActivityHotplaceBinding
 import com.kauproject.placepick.model.DataStore
 import com.kauproject.placepick.model.repository.LoginRepository
+import com.kauproject.placepick.ui.home.SharedViewModel
 
 class SettingHotPlaceActivity: AppCompatActivity() {
+    private val sharedViewModel: SharedViewModel by viewModels()
     private val binding: ActivityHotplaceBinding by lazy {
         ActivityHotplaceBinding.inflate(layoutInflater)
     }
+
+    // Add a property to hold the selectedPlace value
+    private var selectedPlace: List<String?> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -22,7 +30,9 @@ class SettingHotPlaceActivity: AppCompatActivity() {
 
         // 완료 버튼 동작
         binding.btnComplete.setOnClickListener {
-            viewModel.setHotPlace(getHotPlace())
+            selectedPlace = getHotPlace()
+            viewModel.setHotPlace(selectedPlace)
+            sharedViewModel.setSelectedPlace(selectedPlace)
             finish()
         }
     }
