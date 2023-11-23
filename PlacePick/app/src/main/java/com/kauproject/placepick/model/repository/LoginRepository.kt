@@ -25,4 +25,15 @@ class LoginRepository {
     fun signUp(userData: User){
         userRef.child(userData.userNum).setValue(userData)
     }
+    suspend fun updateUserHotPlaces(userNum: String, place1: String?, place2: String?, place3: String?) {
+        try {
+            val userRef = database.getReference("users").child(userNum)
+            userRef.child("place1").setValue(place1)
+            userRef.child("place2").setValue(place2)
+            userRef.child("place3").setValue(place3)
+        } catch (e: Exception) {
+            Log.d("ERROR:", "${e.message}")
+        }
+    }
+
 }

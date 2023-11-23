@@ -24,8 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:text="나가기"
-        android:src="@drawable/ic_smile"
+        android:src="@drawable/ic_clear"
+        android:background="@color/transparent"
+
         android:checkable="true"
         app:layout_constraintBottom_toBottomOf="@+id/txt_Title"
         app:layout_constraintStart_toStartOf="parent"

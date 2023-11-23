@@ -80,4 +80,3 @@ fun getHotPlace(): List<String?>{
     }
     return result
 }
-

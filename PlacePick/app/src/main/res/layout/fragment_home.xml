@@ -17,12 +17,13 @@
         app:layout_constraintBottom_toTopOf="@id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:baselineAligned="false">
 
 
         <TextView
             android:id="@+id/btn_choice1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
@@ -38,7 +39,7 @@
 
         <TextView
             android:id="@+id/btn_choice2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="서울역"
@@ -56,7 +57,7 @@
 
         <TextView
             android:id="@+id/btn_choice3"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="강남역"
@@ -74,9 +75,8 @@
 
         <TextView
             android:id="@+id/btn_setting"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:contentDescription="설정"
             android:layout_marginEnd="6dp"
             android:background="@drawable/ic_setting"
@@ -196,6 +196,8 @@
                 />
 
             <TextView
+                android:id="@+id/apidata4"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -204,6 +206,7 @@
                 />
 
             <TextView
+                android:id="@+id/apidata5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -212,6 +215,7 @@
                 />
 
             <TextView
+                android:id="@+id/apidata6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -220,6 +224,7 @@
                 />
 
             <TextView
+                android:id="@+id/apidata7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -228,6 +233,7 @@
                 />
 
             <TextView
+                android:id="@+id/apidata8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -241,4 +247,5 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 

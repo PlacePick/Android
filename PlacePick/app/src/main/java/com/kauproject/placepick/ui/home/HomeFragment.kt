@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.FragmentHomeBinding
@@ -21,6 +22,7 @@ import com.kauproject.placepick.ui.setting.SettingHotPlaceActivity
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -50,27 +52,25 @@ class HomeFragment : Fragment() {
 
             val userData = DataStore(requireContext()).getUserData()
 
+            onButtonClicked(btnChoice1, userData.place1 ?: "")
+
             btnChoice1.text = userData.place1 ?: ""
             btnChoice2.text = userData.place2 ?: ""
             btnChoice3.text = userData.place3 ?: ""
-//            btn_realtime_input.text = userData.place1 ?: ""
 
             btnChoice1.setOnClickListener {
                 launchHandleButtonClick(btnChoice1.text.toString(), userData.place1 ?: "")
-                btn_realtime_input.text = userData.place1 ?: ""
                 onButtonClicked(btnChoice1, userData.place1 ?: "")
 
             }
 
             btnChoice2.setOnClickListener {
                 launchHandleButtonClick(btnChoice2.text.toString(), userData.place2 ?: "")
-                btn_realtime_input.text = userData.place2 ?: ""
                 onButtonClicked(btnChoice2, userData.place2 ?: "")
             }
 
             btnChoice3.setOnClickListener {
                 launchHandleButtonClick(btnChoice3.text.toString(), userData.place3 ?: "")
-                btn_realtime_input.text = userData.place3 ?: ""
                 onButtonClicked(btnChoice3, userData.place3 ?: "")
             }
 
@@ -120,6 +120,43 @@ class HomeFragment : Fragment() {
         val ppltnRate60 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate60?.toDoubleOrNull() ?: 0
         val ppltnRate70 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate70?.toDoubleOrNull() ?: 0
 
+        // peoplePrediction 리스트에서 각 FCSTPPLTN 객체를 가져와서 placePredictionTime을 출력
+        val peoplePredictions = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.peoplePrediction
+        peoplePredictions?.let {
+            for ((index, prediction) in it.withIndex()) {
+                // 예측값이 null이 아니고, TextView 리스트에 대응하는 인덱스가 있다면 값을 설정
+                if (prediction != null && index < 9) {
+                    when (index) {
+                        0 -> binding.apidata1.text =
+                            prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
+
+                        1 -> binding.apidata2.text =
+                            prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
+
+                        2 -> binding.apidata3.text =
+                            prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
+
+                        3 -> binding.apidata4.text =
+                            prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
+
+                        4 -> binding.apidata5.text =
+                            prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
+
+                        6 -> binding.apidata6.text =
+                            prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
+
+                        7 -> binding.apidata7.text =
+                            prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
+
+                        8 -> binding.apidata8.text =
+                            prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
+
+
+                    }
+                }
+            }
+        }
+
 
         //최댓값 구하는 메서드
         val maxPpltnRate = maxOf(
@@ -143,10 +180,7 @@ class HomeFragment : Fragment() {
         //"."있을시 개행
         val formattedAreaCongestMsg = areaCongestMsg?.replace(".", ".\n") ?: "데이터를 불러오지 못했습니다."
 
-        val ppltntime = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.updateTime
         val areaCongestlvl = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.areaLevel
-        val x =  response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.peoplePrediction?.firstOrNull()?.placeCognitionPrediction
-        val y =  response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.peoplePrediction?.firstOrNull()?.placePredictionTime
 
         val smileImageResource = R.drawable.ic_smile
         val frownImageResource = R.drawable.ic_frown
@@ -159,11 +193,7 @@ class HomeFragment : Fragment() {
 
         binding.textView1.text = maxPpltnRateMessage
         binding.textView4.text = formattedAreaCongestMsg
-        binding.apidata1.text = x ?: "데이터를 불러오지 못했습니다."
-        binding.apidata2.text = y ?: "데이터를 불러오지 못했습니다."
 
-//        binding.apidata1.text = ppltntime ?: "데이터를 불러오지 못했습니다."
-        binding.apidata3.text =  areaCongestlvl  ?: "데이터를 불러오지 못했습니다."
         // areaCongestlvl 값에 따라 이미지 변경
         when (areaCongestlvl) {
             "여유" -> imageView.setImageResource(smileImageResource)
@@ -171,7 +201,6 @@ class HomeFragment : Fragment() {
             "보통" -> imageView.setImageResource(angerImageResource)
             else -> imageView.setImageResource(crowdedImageResource)
         }
-//            binding.apidata3.text =  fcsttime  ?: "데이터를 불러오지 못했습니다."
 
 
 
@@ -182,8 +211,10 @@ class HomeFragment : Fragment() {
             selectedButton?.let { updateButtonBackground(it, null) }
             selectedButton = button
             updateButtonBackground(button, placeData)
+            binding.btnRealtimeInput.text = placeData
 
             launchHandleButtonClick(button.text.toString(), placeData)
+
         }
     }
     private fun updateButtonBackground(textView: TextView, place: String?) {
