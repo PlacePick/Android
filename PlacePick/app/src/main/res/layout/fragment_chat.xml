@@ -4,17 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/txt_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,57 +25,56 @@
         android:layout_marginLeft="20dp"
         android:src="@drawable/ic_clear"
         android:background="@color/transparent"
-
         android:checkable="true"
         app:layout_constraintBottom_toBottomOf="@+id/txt_Title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txt_Title"
-        />
+        app:layout_constraintTop_toTopOf="@+id/txt_Title" />
 
-
-
-    <!--날짜-->
+    <!-- 날짜 -->
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
         android:text="오늘"
         app:layout_constraintEnd_toStartOf="@+id/divider_right"
         app:layout_constraintStart_toEndOf="@+id/divider_left"
         app:layout_constraintTop_toBottomOf="@+id/txt_Title" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <View
         android:id="@+id/divider_left"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
         android:background="#B6B6B6"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toStartOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView2">
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.0" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <View
         android:id="@+id/divider_right"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
         android:background="#B6B6B6"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="@+id/textView2">
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.0" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_messages"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/edt_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
         android:id="@+id/edt_message"
@@ -92,16 +90,15 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_submit"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent" />
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <View
         android:id="@+id/divider_bottom"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="#B6B6B6"
         app:layout_constraintBottom_toTopOf="@+id/edt_message"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_submit"
@@ -114,14 +111,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/edt_message" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_messages"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/edt_message"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-
