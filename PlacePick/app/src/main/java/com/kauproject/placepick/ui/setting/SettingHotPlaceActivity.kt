@@ -8,10 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.kauproject.placepick.databinding.ActivityHotplaceBinding
 import com.kauproject.placepick.model.DataStore
 import com.kauproject.placepick.model.repository.LoginRepository
-import com.kauproject.placepick.ui.home.SharedViewModel
 
 class SettingHotPlaceActivity: AppCompatActivity() {
-    private val sharedViewModel: SharedViewModel by viewModels()
     private val binding: ActivityHotplaceBinding by lazy {
         ActivityHotplaceBinding.inflate(layoutInflater)
     }
@@ -32,7 +30,6 @@ class SettingHotPlaceActivity: AppCompatActivity() {
         binding.btnComplete.setOnClickListener {
             selectedPlace = getHotPlace()
             viewModel.setHotPlace(selectedPlace)
-            sharedViewModel.setSelectedPlace(selectedPlace)
             finish()
         }
     }

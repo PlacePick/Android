@@ -2,41 +2,27 @@ package com.kauproject.placepick.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.FragmentHomeBinding
 import com.kauproject.placepick.model.DataStore
-import com.kauproject.placepick.model.response.GetHotPlaceInfoResponse
 import com.kauproject.placepick.model.RetrofitInstance
 import com.kauproject.placepick.model.service.GetHotPlaceInfoService
+import com.kauproject.placepick.ui.MainViewModel
 import com.kauproject.placepick.ui.chat.ChatFragment
 import com.kauproject.placepick.ui.setting.SettingHotPlaceActivity
+import com.kauproject.placepick.util.BaseFragment
 import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment() {
-    private val sharedViewModel: SharedViewModel by activityViewModels()
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
     private var selectedButton: TextView? = null
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,10 +31,8 @@ class HomeFragment : Fragment() {
             val btnChoice1 = binding.btnChoice1
             val btnChoice2 = binding.btnChoice2
             val btnChoice3 = binding.btnChoice3
-            val btn_setting = binding.btnSetting
-            val btn_realtime_input = binding.btnRealtimeInput
-
-
+            val btnSetting = binding.btnSetting
+            val btnRealtimeInput = binding.btnRealtimeInput
 
             val userData = DataStore(requireContext()).getUserData()
 
@@ -61,7 +45,6 @@ class HomeFragment : Fragment() {
             btnChoice1.setOnClickListener {
                 launchHandleButtonClick(btnChoice1.text.toString(), userData.place1 ?: "")
                 onButtonClicked(btnChoice1, userData.place1 ?: "")
-
             }
 
             btnChoice2.setOnClickListener {
@@ -74,42 +57,45 @@ class HomeFragment : Fragment() {
                 onButtonClicked(btnChoice3, userData.place3 ?: "")
             }
 
-            btn_setting.setOnClickListener {
+            btnSetting.setOnClickListener {
                 val intent = Intent(requireContext(), SettingHotPlaceActivity::class.java)
                 startActivity(intent)
             }
-            btn_realtime_input.setOnClickListener {
-                val selectedPlace: String = btn_realtime_input.text.toString()
+
+            btnRealtimeInput.setOnClickListener {
+                val selectedPlace: String = btnRealtimeInput.text.toString()
 
                 if (selectedPlace.isNotEmpty()) {
                     launchHandleButtonClickChild(selectedPlace, selectedPlace)
                 }
             }
-
         }
     }
+
+
+
     private fun launchHandleButtonClick(selectedPlace: String, placeData: String) {
         lifecycleScope.launch {
             handleButtonClickChild(selectedPlace, placeData)
-
         }
     }
 
     private fun launchHandleButtonClickChild(selectedPlace: String, placeData: String) {
         lifecycleScope.launch {
-            val chatFragment = ChatFragment.newInstance(selectedPlace, selectedPlace)
+            val chatFragment = ChatFragment.newInstance(selectedPlace, placeData)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fl_main, chatFragment)
                 .commit()
         }
 
+        // 이 부분은 lifecycleScope 외부에 있습니다. 이것이 launch 블록 내부로 이동해야 하는지 확인하십시오.
         val response = RetrofitInstance.retrofit.create(GetHotPlaceInfoService::class.java)
     }
 
     private suspend fun handleButtonClickChild(selectedPlace: String, placeData: String) {
+
         // Retrofit을 이용하여 API 호출
-        val response = RetrofitInstance.retrofit.create(GetHotPlaceInfoService::class.java)
-            .getHotPlaceInfo(selectedPlace)
+        val response = RetrofitInstance.retrofit.create(GetHotPlaceInfoService::class.java).getHotPlaceInfo(selectedPlace)
 
         val ppltnRate0 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate0?.toDoubleOrNull() ?: 0
         val ppltnRate10 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate10?.toDoubleOrNull() ?: 0
@@ -120,42 +106,28 @@ class HomeFragment : Fragment() {
         val ppltnRate60 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate60?.toDoubleOrNull() ?: 0
         val ppltnRate70 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate70?.toDoubleOrNull() ?: 0
 
-        // peoplePrediction 리스트에서 각 FCSTPPLTN 객체를 가져와서 placePredictionTime을 출력
+
         val peoplePredictions = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.peoplePrediction
         peoplePredictions?.let {
             for ((index, prediction) in it.withIndex()) {
-                // 예측값이 null이 아니고, TextView 리스트에 대응하는 인덱스가 있다면 값을 설정
                 if (prediction != null && index < 9) {
                     when (index) {
-                        0 -> binding.apidata1.text =
-                            prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
-
-                        1 -> binding.apidata2.text =
-                            prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
-
-                        2 -> binding.apidata3.text =
-                            prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
-
-                        3 -> binding.apidata4.text =
-                            prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
-
-                        4 -> binding.apidata5.text =
-                            prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
-
-                        6 -> binding.apidata6.text =
-                            prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
-
-                        7 -> binding.apidata7.text =
-                            prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
-
-                        8 -> binding.apidata8.text =
-                            prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
-
+                        0 -> binding.apidata1.text = prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
+                        1 -> binding.apidata2.text = prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
+                        2 -> binding.apidata3.text = prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
+                        3 -> binding.apidata4.text = prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
+                        4 -> binding.apidata5.text = prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
+                        5 -> binding.apidata6.text = prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
+                        6 -> binding.apidata7.text = prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
+                        7 -> binding.apidata8.text = prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
 
                     }
                 }
             }
         }
+
+
+
 
 
         //최댓값 구하는 메서드
@@ -205,6 +177,7 @@ class HomeFragment : Fragment() {
 
 
     }
+
     private fun onButtonClicked(button: TextView, placeData: String) {
         if (selectedButton != button) {
             // 선택된 버튼이 변경되었을 때만 업데이트
@@ -228,22 +201,12 @@ class HomeFragment : Fragment() {
     }
 
 
-
-    private suspend fun getHotPlaceInfoFromApi(hotPlace: String): GetHotPlaceInfoResponse? {
-        return try {
-            // Retrofit을 이용하여 API 호출
-            val response = RetrofitInstance.retrofit.create(GetHotPlaceInfoService::class.java)
-                .getHotPlaceInfo(hotPlace)
-
-            // API 응답 반환
-            response.body()
-        } catch (e: Exception) {
-            null
-        }
+    override fun getFragmentBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentHomeBinding {
+        return FragmentHomeBinding.inflate(inflater, container, false)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }

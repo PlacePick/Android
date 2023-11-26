@@ -1,50 +1,49 @@
 package com.kauproject.placepick.model.repository
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.kauproject.placepick.model.FireBaseInstance
 import com.kauproject.placepick.model.data.Message
-import com.kauproject.placepick.util.HotPlace
 import kotlinx.coroutines.tasks.await
 
 class ChatListRepository {
     private val database = FireBaseInstance.database
     private val chatListRef = database.getReference("chatList")
-//    private val userRef = database.getReference("users")
 
-    // hotplace 리스트를 받아와서 Firebase에 추가하는 함수
-    fun addHotPlacesToChatList(hotPlaces: List<String>) {
-        for (hotPlace in hotPlaces) {
-            // hotPlace를 키로 하는 "chatList"의 하위 레퍼런스 생성
-            val chatListDetailRef = chatListRef.child(hotPlace)
-
-            // hotPlace에 대한 message 객체 생성 (원하는 속성으로 변경 가능)
-            val messages = Message("샘플유저", "샘플메시지", 131231312, hotPlace,true)
-
-            // hotPlace에 해당하는 데이터를 Firebase에 추가
-            chatListDetailRef.setValue(messages)
-        }
-    }
 
 
     // 새로운 함수를 추가하여 특정 채팅방의 메시지를 가져오는 로직을 작성
-    suspend fun getMessagesForChatRoom(selectedHotPlace: String, nickName: String): List<Message> {
-        val chatListDetailRef = chatListRef.child(selectedHotPlace).child(nickName)
+    suspend fun getMessagesForChatRoom(selectedHotPlace: String): List<Message> {
+        val chatListDetailRef = chatListRef.child(selectedHotPlace)
 
-        // ValueEventListener를 사용하여 데이터 읽어오기
         return try {
             val dataSnapshot = chatListDetailRef.get().await()
 
-            // dataSnapshot이 null이 아니고 해당 경로에 데이터가 있는 경우에만 처리
-            dataSnapshot.children.mapNotNull { childSnapshot ->
-                childSnapshot.getValue(Message::class.java)
+            val messages = mutableListOf<Message>()
+
+            dataSnapshot.children.mapNotNull { nickNameSnapshot ->
+
+                    // nickNameSnapshot은 nickName을 키로 갖는 객체
+                    val nickName = nickNameSnapshot.key
+                    if (nickName != null) {
+                        // 각 nickName에 해당하는 메시지들을 가져옴
+                        val messagesForNickName = nickNameSnapshot.children.mapNotNull { timestampSnapshot ->
+                                val message = timestampSnapshot.getValue(Message::class.java)
+                                if (message != null) {
+                                    messages.add(message)
+                                } else {
+
+                            }
+                        }
+                    } else {
+                    }
+
             }
+
+            messages
         } catch (e: Exception) {
-            // 예외 발생 시에는 빈 리스트 반환 또는 에러 로깅 등을 수행할 수 있습니다.
             emptyList()
         }
     }
+
 
     suspend fun addMessageToChatList(message: Message, nickName: String, selectedHotPlace: String) {
         // 닉네임으로 메시지를 Firebase에 추가
@@ -62,7 +61,5 @@ class ChatListRepository {
             chatListDetailRef.child(timestampKey).setValue(message)
         }
     }
-
-
 
 }

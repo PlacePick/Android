@@ -13,11 +13,13 @@ import java.util.Locale
 
 class ChatAdapter(
     private val messages: List<Message>,
+    private val currentUserNickname: String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_MINE = 1
         const val VIEW_TYPE_OTHERS = 0
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -27,12 +29,14 @@ class ChatAdapter(
                     .inflate(R.layout.item_chat_mine, parent, false)
                 ChatMineViewHolder(view)
             }
+
             VIEW_TYPE_OTHERS -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_chat_others, parent, false)
                 ChatOthersViewHolder(view)
             }
-            else -> throw IllegalArgumentException("유효하지 않은 뷰 타입입니다.")
+
+            else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
@@ -40,14 +44,20 @@ class ChatAdapter(
         val message = messages[position]
 
         when (holder) {
-            is ChatMineViewHolder -> holder.bindMine(message)
-            is ChatOthersViewHolder -> holder.bindOthers(message)
+            is ChatMineViewHolder -> {
+                holder.bindMine(message, currentUserNickname, this)
+            }
+
+            is ChatOthersViewHolder -> {
+                holder.bindOthers(message, currentUserNickname, this)
+
+            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val message = messages[position]
-        return if (message.currentUser) {
+        return if (message.senderId == currentUserNickname) {
             VIEW_TYPE_MINE
         } else {
             VIEW_TYPE_OTHERS
@@ -59,41 +69,21 @@ class ChatAdapter(
     }
 
     class ChatMineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindMine(message: Message) {
-            itemView.findViewById<TextView>(R.id.mine_txt_message).text = if (message.senderId == "jsj") message.content else message.senderId
+        fun bindMine(message: Message, currentUserNickname: String, adapter: ChatAdapter) {
             itemView.findViewById<TextView>(R.id.mine_txt_message).text = message.content
-            itemView.findViewById<TextView>(R.id.mine_txt_date).text =
-                convertTimestampToDate(message.timestamp)
-
-            // 다른 속성 및 UI 요소를 필요에 따라 설정
-        }
-
-        private fun convertTimestampToDate(timestamp: Long): String {
-            // 예시: timestamp를 날짜 문자열로 변환
-            val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-            val date = Date(timestamp)
-            return sdf.format(date)
+            val dateFormat = SimpleDateFormat("a hh:mm", Locale.getDefault())
+            val formattedTime = dateFormat.format(Date(message.timestamp))
+            itemView.findViewById<TextView>(R.id.mine_txt_date).text = formattedTime
         }
     }
 
-
     class ChatOthersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindOthers(message: Message) {
+        fun bindOthers(message: Message, currentUserNickname: String, adapter: ChatAdapter) {
             itemView.findViewById<TextView>(R.id.others_name).text = message.senderId
             itemView.findViewById<TextView>(R.id.others_txt_message).text = message.content
-            // Timestamp를 변환 (예: SimpleDateFormat 사용)
-            itemView.findViewById<TextView>(R.id.others_txt_date).text = convertTimestampToDate(message.timestamp)
-
-
-
-            // 다른 속성 및 UI 요소를 필요에 따라 설정
+            val dateFormat = SimpleDateFormat("a hh:mm", Locale.getDefault())
+            val formattedTime = dateFormat.format(Date(message.timestamp))
+            itemView.findViewById<TextView>(R.id.others_txt_date).text = formattedTime
         }
-        private fun convertTimestampToDate(timestamp: Long): String {
-            // 예시: timestamp를 날짜 문자열로 변환
-            val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-            val date = Date(timestamp)
-            return sdf.format(date)
-        }
-
     }
 }

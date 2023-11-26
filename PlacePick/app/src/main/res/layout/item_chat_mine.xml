@@ -12,7 +12,7 @@
         android:id="@+id/mine_txt_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="30dp"
         android:autoLink="web"
         android:background="@drawable/background_talk_mine"
         android:gravity="start|center_vertical"
