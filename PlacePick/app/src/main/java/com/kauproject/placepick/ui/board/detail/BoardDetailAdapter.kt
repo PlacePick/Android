@@ -1,12 +1,13 @@
-package com.kauproject.placepick.ui.board.detail
-
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kauproject.placepick.databinding.ItemBoardDetailBinding
 import com.kauproject.placepick.model.data.Post
 
-class BoardDetailAdapter: RecyclerView.Adapter<BoardDetailAdapter.BoardDetailHolder>() {
+class BoardDetailAdapter(
+    val onPostClicked: (Post) -> Unit
+): RecyclerView.Adapter<BoardDetailAdapter.BoardDetailHolder>() {
     private var detailList = emptyList<Post>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BoardDetailHolder {
         val binding = ItemBoardDetailBinding.inflate(
@@ -22,6 +23,12 @@ class BoardDetailAdapter: RecyclerView.Adapter<BoardDetailAdapter.BoardDetailHol
     override fun onBindViewHolder(holder: BoardDetailHolder, position: Int) {
         val detail = detailList[position]
         holder.setDetail(detail)
+
+        // 게시글 클릭
+        holder.binding.llBoardDetail.setOnClickListener {
+            Log.d("TEST", "Click:${detailList[position]}")
+            onPostClicked(detailList[position])
+        }
     }
 
     inner class BoardDetailHolder(val binding: ItemBoardDetailBinding): RecyclerView.ViewHolder(binding.root){
@@ -33,7 +40,7 @@ class BoardDetailAdapter: RecyclerView.Adapter<BoardDetailAdapter.BoardDetailHol
     }
 
     fun updateList(list: List<Post>){
-        detailList = list
+        detailList = list.reversed()
         notifyDataSetChanged()
     }
 }

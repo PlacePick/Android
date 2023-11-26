@@ -4,5 +4,6 @@ data class Post(
     val content: String = "null",
     val date: String = "",
     val nick: String = "",
-    val userNum: String = ""
+    val userNum: String = "",
+    val postId: String = ""
 )

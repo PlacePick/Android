@@ -12,6 +12,7 @@ import com.kauproject.placepick.model.data.Post
 import com.kauproject.placepick.model.data.User
 import com.kauproject.placepick.ui.MainViewModel
 import com.kauproject.placepick.util.BaseFragment
+import com.kauproject.placepick.util.Util
 
 class BoardDetailPostFragment: BaseFragment<FragmentBoardDetailWriteBinding>() {
     companion object{
@@ -30,7 +31,7 @@ class BoardDetailPostFragment: BaseFragment<FragmentBoardDetailWriteBinding>() {
                     Post(
                         title = binding.etTitle.text.toString(),
                         content = binding.etContent.text.toString(),
-                        date = "",
+                        date = Util().convertTimeToDateString(System.currentTimeMillis()),
                         userNum = data.userNum,
                         nick = data.nick ?: "익명"
                     )
