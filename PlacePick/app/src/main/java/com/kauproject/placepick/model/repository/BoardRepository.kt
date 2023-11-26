@@ -1,10 +1,13 @@
 package com.kauproject.placepick.model.repository
+import android.util.Log
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.kauproject.placepick.model.FireBaseInstance
 import com.kauproject.placepick.model.RetrofitInstance
 import com.kauproject.placepick.model.State
+import com.kauproject.placepick.model.data.Comment
 import com.kauproject.placepick.model.data.Post
 import com.kauproject.placepick.model.service.GetHotPlaceInfoService
 import com.kauproject.placepick.util.HotPlace
@@ -15,6 +18,7 @@ import kotlinx.coroutines.flow.flow
 class BoardRepository {
     private val database = FireBaseInstance.database
     private val boardRef = database.getReference("boards")
+    private val userRef = database.getReference("users")
 
     // 게시글 읽어오기 콜백함수
     fun getBoardDetail(board: String, detail: (List<Post>) -> Unit){
@@ -37,9 +41,43 @@ class BoardRepository {
         })
     }
 
+    // 게시글 댓글 읽어오는 콜백함수
+    fun getPostComment(board: String, postId: String, comment: (List<Comment>) -> Unit){
+        val commentRef = boardRef.child(board).child(postId).child("comment")
+        val commentList = mutableListOf<Comment>()
+
+        commentRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(item in snapshot.children){
+                    item.getValue(Comment::class.java)?.let { comment ->
+                        Log.d("TEST_ADP_REPO", "in:$comment")
+                        commentList.add(comment)
+                    }
+                }
+                comment(commentList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                comment(emptyList())
+            }
+
+        })
+    }
+
     // 게시글 작성
-    fun postWrite(post: Post, board: String){
-        boardRef.child(board).push().setValue(post)
+    fun postWrite(post: Post, board: String, userNum: String){
+        val postId = boardRef.child(board).push().key
+        postId?.let { id->
+            boardRef.child(board).child(id).setValue(post.copy(postId = id))
+            userRef.child(userNum).child("post").child(id).setValue(post)
+        }
+    }
+
+    fun commentWrite(comment: Comment, board: String, postId: String){
+        val commentId = boardRef.child(board).child(postId).child("comment").push().key
+        commentId?.let { id->
+            boardRef.child(board).child(postId).child("comment").child(id).setValue(comment.copy(commentId = id))
+        }
     }
 
     // 혼잡도 상태
@@ -62,6 +100,7 @@ class BoardRepository {
         emit(State.Error(e))
     }
 
+    // 요약된 지역 명세서에 맞게 매핑
     private fun mapperPlace(place: String): String{
         return when(place){
             "논현역" -> "신논현역·논현역"

@@ -1,25 +1,17 @@
 package com.kauproject.placepick.ui.board.detail
 
+import BoardDetailAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.FragmentBoardDetailBinding
-import com.kauproject.placepick.model.data.Post
 import com.kauproject.placepick.ui.MainViewModel
 import com.kauproject.placepick.util.BaseFragment
 import com.kauproject.placepick.util.FragmentUtil
-import kotlinx.coroutines.launch
 
 class BoardDetailFragment(): BaseFragment<FragmentBoardDetailBinding>() {
     companion object{
@@ -30,7 +22,12 @@ class BoardDetailFragment(): BaseFragment<FragmentBoardDetailBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel: MainViewModel by activityViewModels()
-        val boardDetailAdapter = BoardDetailAdapter()
+        val boardDetailAdapter = BoardDetailAdapter(
+            onPostClicked = {
+                viewModel.postContent(it)
+                FragmentUtil.showFragment(requireActivity().supportFragmentManager, BoardPostFragment(), BoardPostFragment.TAG)
+            }
+        )
 
         viewModel.getDetailList() // 게시판 내용 가져오기
 
@@ -43,6 +40,11 @@ class BoardDetailFragment(): BaseFragment<FragmentBoardDetailBinding>() {
 
         binding.tvBtnWrite.setOnClickListener {
             FragmentUtil.showFragment(requireActivity().supportFragmentManager, BoardDetailPostFragment(), BoardDetailPostFragment.TAG)
+        }
+
+        binding.ivBtnBack.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.popBackStack()
         }
 
         binding.rvBoardDetail.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

@@ -61,7 +61,7 @@ class BoardAdapter(
                 }
                 "약간 붐빔" -> {
                     binding.tvState.text = state
-                    binding.tvState.setBackgroundResource(R.drawable.bg_state_normal)
+                    binding.tvState.setBackgroundResource(R.drawable.bg_state_bad)
                 }
                 "혼잡" -> {
                     binding.tvState.text = state
