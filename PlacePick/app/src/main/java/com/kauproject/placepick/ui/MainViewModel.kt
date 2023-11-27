@@ -16,11 +16,11 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     application: Application
 ): AndroidViewModel(application) {
-    private val dataStore = DataStore(application)
+
     companion object{
         const val TAG = "MainViewModel"
     }
-
+    private val dataStore = DataStore(application)
     private val boardRepository = BoardRepository()
 
     private val _detailList = MutableLiveData<List<Post>>()
@@ -131,9 +131,6 @@ class MainViewModel(
         }
     }
 
-    fun refreshComment(){
-        _commentList.value = emptyList()
-    }
 }
 
 data class UserData(
