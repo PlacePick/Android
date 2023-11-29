@@ -37,14 +37,45 @@
                 android:layout_marginVertical="10dp"
                 />
 
-            <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="@string/board_detail_date"
-                />
+                android:orientation="horizontal"
+                android:layout_gravity="start"
+                >
 
+                <LinearLayout
+                    android:id="@+id/ll_comment_cnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:layout_marginEnd="15dp"
+                    >
+                    <ImageView
+                        android:id="@+id/iv_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_comment"
+                        />
+                    <TextView
+                        android:id="@+id/tv_comment_cnt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        android:textColor="@color/main_color"
+                        />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/board_detail_date"
+                    />
+            </LinearLayout>
         </LinearLayout>
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"

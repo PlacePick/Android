@@ -1,11 +1,15 @@
+import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kauproject.placepick.databinding.ItemBoardDetailBinding
 import com.kauproject.placepick.model.data.Post
+import com.kauproject.placepick.ui.MainViewModel
 
 class BoardDetailAdapter(
+    val viewModel: MainViewModel,
     val onPostClicked: (Post) -> Unit
 ): RecyclerView.Adapter<BoardDetailAdapter.BoardDetailHolder>() {
     private var detailList = emptyList<Post>()
@@ -26,7 +30,6 @@ class BoardDetailAdapter(
 
         // 게시글 클릭
         holder.binding.llBoardDetail.setOnClickListener {
-            Log.d("TEST", "Click:${detailList[position]}")
             onPostClicked(detailList[position])
         }
     }
@@ -36,6 +39,11 @@ class BoardDetailAdapter(
             binding.tvTitle.text = detail.title
             binding.tvContent.text = detail.content
             binding.tvDate.text = detail.date
+
+            viewModel.getCommentCnt(postId = detail.postId){ count ->
+                binding.llCommentCnt.visibility = if(count != 0) View.VISIBLE else View.GONE
+                binding.tvCommentCnt.text = count.toString()
+            }
         }
     }
 

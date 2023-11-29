@@ -50,7 +50,6 @@ class BoardRepository {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(item in snapshot.children){
                     item.getValue(Comment::class.java)?.let { comment ->
-                        Log.d("TEST_ADP_REPO", "in:$comment")
                         commentList.add(comment)
                     }
                 }

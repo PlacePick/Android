@@ -41,7 +41,6 @@ class BoardPostFragment: BaseFragment<FragmentBoardDetailPostBinding>() {
         }
 
         viewModel.commentList.observe(viewLifecycleOwner, Observer {
-            Log.d("TEST_ADP_FRG", "$it")
             boardPostAdapter.commentListUpdate(it)
         })
 

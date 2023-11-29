@@ -23,6 +23,7 @@ class BoardDetailFragment(): BaseFragment<FragmentBoardDetailBinding>() {
 
         val viewModel: MainViewModel by activityViewModels()
         val boardDetailAdapter = BoardDetailAdapter(
+            viewModel = viewModel,
             onPostClicked = {
                 viewModel.postContent(it)
                 FragmentUtil.showFragment(requireActivity().supportFragmentManager, BoardPostFragment(), BoardPostFragment.TAG)

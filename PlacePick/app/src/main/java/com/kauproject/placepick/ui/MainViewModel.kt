@@ -125,8 +125,15 @@ class MainViewModel(
     fun getComment(postId: String){
         _board.value?.let { board->
             boardRepository.getPostComment(board = board, postId = postId){ list->
-                Log.d("TeST_ADP_VM", "$list")
                 _commentList.value = list
+            }
+        }
+    }
+
+    fun getCommentCnt(postId: String, commentCount: (Int) -> Unit){
+        _board.value?.let { board->
+            boardRepository.getPostComment(board = board, postId = postId){
+                commentCount(it.size)
             }
         }
     }
