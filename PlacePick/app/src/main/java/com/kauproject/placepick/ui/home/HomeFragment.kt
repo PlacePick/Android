@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.FragmentHomeBinding
 import com.kauproject.placepick.model.DataStore
 import com.kauproject.placepick.model.RetrofitInstance
 import com.kauproject.placepick.model.service.GetHotPlaceInfoService
-import com.kauproject.placepick.ui.MainViewModel
 import com.kauproject.placepick.ui.chat.ChatFragment
 import com.kauproject.placepick.ui.setting.SettingHotPlaceActivity
 import com.kauproject.placepick.util.BaseFragment
@@ -22,7 +20,6 @@ import kotlinx.coroutines.launch
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private var selectedButton: TextView? = null
-    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,13 +85,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 .commit()
         }
 
-        // 이 부분은 lifecycleScope 외부에 있습니다. 이것이 launch 블록 내부로 이동해야 하는지 확인하십시오.
         val response = RetrofitInstance.retrofit.create(GetHotPlaceInfoService::class.java)
     }
 
     private suspend fun handleButtonClickChild(selectedPlace: String, placeData: String) {
 
-        // Retrofit을 이용하여 API 호출
         val response = RetrofitInstance.retrofit.create(GetHotPlaceInfoService::class.java).getHotPlaceInfo(selectedPlace)
 
         val ppltnRate0 = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.rate0?.toDoubleOrNull() ?: 0
@@ -110,20 +105,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         val peoplePredictions = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.peoplePrediction
         peoplePredictions?.let {
             for ((index, prediction) in it.withIndex()) {
-                if (prediction != null && index < 9) {
-                    when (index) {
-                        0 -> binding.apidata1.text = prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
-                        1 -> binding.apidata2.text = prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
-                        2 -> binding.apidata3.text = prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
-                        3 -> binding.apidata4.text = prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
-                        4 -> binding.apidata5.text = prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
-                        5 -> binding.apidata6.text = prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
-                        6 -> binding.apidata7.text = prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
-                        7 -> binding.apidata8.text = prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
-
+                if (prediction != null && index < 8) {
+                    val bindingText = when (index % 2) {
+                        0 -> prediction.placePredictionTime ?: "데이터를 불러오지 못했습니다."
+                        1 -> prediction.placeCognitionPrediction ?: "데이터를 불러오지 못했습니다."
+                        else -> throw IllegalArgumentException("Invalid index: $index")
                     }
+
+                    val bindingView = when (index) {
+                        0 -> binding.apidata1
+                        1 -> binding.apidata2
+                        2 -> binding.apidata3
+                        3 -> binding.apidata4
+                        4 -> binding.apidata5
+                        5 -> binding.apidata6
+                        6 -> binding.apidata7
+                        7 -> binding.apidata8
+                        else -> throw IllegalArgumentException("Invalid index: $index")
+                    }
+
+                    bindingView.text = bindingText
                 }
             }
+
         }
 
 
@@ -136,16 +140,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             ppltnRate40.toDouble(), ppltnRate50.toDouble(), ppltnRate60.toDouble(), ppltnRate70.toDouble()
         )
         // 최댓값에 해당하는 연령대를 찾아 한글 메시지 설정
-        val maxPpltnRateMessage = when {
-            maxPpltnRate.equals(ppltnRate0) -> "어린이가 가장 많습니다."
-            maxPpltnRate.equals(ppltnRate10) -> "10대가 가장 많습니다."
-            maxPpltnRate.equals(ppltnRate20) -> "20대가 가장 많습니다."
-            maxPpltnRate.equals(ppltnRate30) -> "30대가 가장 많습니다."
-            maxPpltnRate.equals(ppltnRate40) -> "40대가 가장 많습니다."
-            maxPpltnRate.equals(ppltnRate50) -> "50대가 가장 많습니다."
-            maxPpltnRate.equals(ppltnRate60) -> "60대가 가장 많습니다."
-            maxPpltnRate.equals(ppltnRate70) -> "70대 이상이 가장 많습니다."
-            else -> "데이터를 불러오지 못했습니다."
+        val ageRanges = listOf(ppltnRate0, ppltnRate10, ppltnRate20, ppltnRate30, ppltnRate40, ppltnRate50, ppltnRate60, ppltnRate70)
+        var maxPpltnRateMessage = "데이터를 불러오지 못했습니다."
+
+        for ((index, ageRange) in ageRanges.withIndex()) {
+            if (maxPpltnRate == ageRange) {
+                maxPpltnRateMessage = when (index) {
+                    0 -> "어린이가 가장 많습니다."
+                    1 -> "10대가 가장 많습니다."
+                    2 -> "20대가 가장 많습니다."
+                    3 -> "30대가 가장 많습니다."
+                    4 -> "40대가 가장 많습니다."
+                    5 -> "50대가 가장 많습니다."
+                    6 -> "60대가 가장 많습니다."
+                    7 -> "70대 이상이 가장 많습니다."
+                    else -> "데이터를 불러오지 못했습니다."
+                }
+                break
+            }
         }
 
         val areaCongestMsg = response.body()?.seoulRtdCitydataPpltn?.firstOrNull()?.areaMessage
@@ -177,6 +189,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
     }
+
 
     private fun onButtonClicked(button: TextView, placeData: String) {
         if (selectedButton != button) {
@@ -210,3 +223,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
 }
+
