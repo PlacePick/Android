@@ -36,7 +36,7 @@ class ChatAdapter(
                 ChatOthersViewHolder(view)
             }
 
-            else -> throw IllegalArgumentException("Invalid view type")
+            else -> throw IllegalArgumentException("정하지 않은 뷰 타입")
         }
     }
 
@@ -45,11 +45,11 @@ class ChatAdapter(
 
         when (holder) {
             is ChatMineViewHolder -> {
-                holder.bindMine(message, currentUserNickname, this)
+                holder.bindMine(message)
             }
 
             is ChatOthersViewHolder -> {
-                holder.bindOthers(message, currentUserNickname, this)
+                holder.bindOthers(message)
 
             }
         }
@@ -69,7 +69,7 @@ class ChatAdapter(
     }
 
     class ChatMineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindMine(message: Message, currentUserNickname: String, adapter: ChatAdapter) {
+        fun bindMine(message: Message) {
             itemView.findViewById<TextView>(R.id.mine_txt_message).text = message.content
             val dateFormat = SimpleDateFormat("a hh:mm", Locale.getDefault())
             val formattedTime = dateFormat.format(Date(message.timestamp))
@@ -77,8 +77,9 @@ class ChatAdapter(
         }
     }
 
+
     class ChatOthersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindOthers(message: Message, currentUserNickname: String, adapter: ChatAdapter) {
+        fun bindOthers(message: Message) {
             itemView.findViewById<TextView>(R.id.others_name).text = message.senderId
             itemView.findViewById<TextView>(R.id.others_txt_message).text = message.content
             val dateFormat = SimpleDateFormat("a hh:mm", Locale.getDefault())

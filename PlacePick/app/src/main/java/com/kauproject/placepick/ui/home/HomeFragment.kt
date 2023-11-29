@@ -85,7 +85,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 .commit()
         }
 
-        val response = RetrofitInstance.retrofit.create(GetHotPlaceInfoService::class.java)
     }
 
     private suspend fun handleButtonClickChild(selectedPlace: String, placeData: String) {
@@ -139,7 +138,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             ppltnRate0.toDouble(), ppltnRate10.toDouble(), ppltnRate20.toDouble(), ppltnRate30.toDouble(),
             ppltnRate40.toDouble(), ppltnRate50.toDouble(), ppltnRate60.toDouble(), ppltnRate70.toDouble()
         )
-        // 최댓값에 해당하는 연령대를 찾아 한글 메시지 설정
+        // 최댓값에 해당하는 연령대를 찾아 출력
         val ageRanges = listOf(ppltnRate0, ppltnRate10, ppltnRate20, ppltnRate30, ppltnRate40, ppltnRate50, ppltnRate60, ppltnRate70)
         var maxPpltnRateMessage = "데이터를 불러오지 못했습니다."
 

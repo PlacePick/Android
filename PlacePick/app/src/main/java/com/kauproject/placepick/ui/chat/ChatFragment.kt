@@ -1,7 +1,6 @@
 package com.kauproject.placepick.ui.chat
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,22 +65,19 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
             recyclerView.adapter = chatAdapter
 
             // 채팅방의 메시지를 가져오고 어댑터에 설정
-            val placeData = arguments?.getString(ARG_PLACE_DATA) ?: ""
-            val board = placeData
+            val board = arguments?.getString(ARG_PLACE_DATA) ?: ""
             val nickName = userData.nickName ?: ""
             val selectedHotPlace = binding.txtTitle.text.toString()
 
             val chatListRepository = ChatListRepository()
-            try {
+
                 val chatMessages = chatListRepository.getMessagesForChatRoom(selectedHotPlace)
                 messages.clear()
                 messages.addAll(chatMessages.sortedBy { it.timestamp })
                 chatAdapter = ChatAdapter(messages, currentUserNickname)
                 recyclerView.adapter = chatAdapter
 
-            } catch (e: Exception) {
-                Log.e("ChatFragment", "Error getting messages: ${e.message}")
-            }
+
 
             binding.btnSubmit.setOnClickListener {
                 val messageContent = binding.edtMessage.text.toString().trim()
@@ -95,11 +91,8 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
                         chatAdapter.notifyItemInserted(messages.size - 1)
 
                         // Firebase에 메시지 추가
-                        try {
-                            chatListRepository.addMessageToChatList(newMessage, nickName, selectedHotPlace)
-                        } catch (e: Exception) {
-                            Log.e("ChatFragment", "Error adding message to Firebase: ${e.message}")
-                        }
+                        chatListRepository.addMessageToChatList(newMessage, nickName, selectedHotPlace)
+
 
                         binding.edtMessage.text.clear()
                         recyclerView.smoothScrollToPosition(messages.size - 1)
