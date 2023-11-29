@@ -9,6 +9,7 @@ data class Message(
 
     constructor() : this("", "", 0, "")
 
+    //timestamp 순으로 종렬
     override fun compareTo(other: Message): Int {
         return timestamp.compareTo(other.timestamp)
     }
