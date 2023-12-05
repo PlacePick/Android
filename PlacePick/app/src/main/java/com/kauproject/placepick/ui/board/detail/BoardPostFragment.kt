@@ -22,7 +22,6 @@ class BoardPostFragment: BaseFragment<FragmentBoardDetailPostBinding>() {
     private val boardPostAdapter = BoardPostAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d(TAG, "OnVC")
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel: MainViewModel by activityViewModels()

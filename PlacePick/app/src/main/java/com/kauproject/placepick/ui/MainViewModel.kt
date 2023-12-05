@@ -47,6 +47,15 @@ class MainViewModel(
     val commentList: LiveData<List<Comment>>
         get() = _commentList
 
+    private val _serverError = MutableLiveData(0)
+    val serverError: LiveData<Int>
+        get() = _serverError
+
+    private val _error = MutableLiveData("")
+    val error: LiveData<String>
+        get() = _error
+
+
     // 게시글 조회
     fun getDetailList(){
         _board.value?.let {
@@ -85,14 +94,8 @@ class MainViewModel(
                 when(state){
                     is State.Loading -> { _placeState.value = emptyList()}
                     is State.Success -> { _placeState.value = state.data }
-                    is State.ServerError -> {
-                        _placeState.value = null
-                        Log.d(TAG, "SERVERERROR${state.code}")
-                    }
-                    is State.Error -> {
-                        _placeState.value = null
-                        Log.d(TAG, "ERROR:${state.exception}")
-                    }
+                    is State.ServerError -> { _serverError.value = state.code }
+                    is State.Error -> { _error.value = state.exception.toString() }
                 }
             }
         }

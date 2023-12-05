@@ -92,8 +92,6 @@ class BoardPostAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         if(commentList.isNotEmpty()){
-            Log.d("TESTSIZE", "list:${updateList}")
-            Log.d("TESTSIZE", "size:${updateList.size}")
             commentList.add(updateList[updateList.lastIndex])
         }else{
             commentList.addAll(updateList)

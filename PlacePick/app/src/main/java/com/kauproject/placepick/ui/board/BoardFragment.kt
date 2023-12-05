@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.kauproject.placepick.R
 import com.kauproject.placepick.databinding.FragmentBoardBinding
 import com.kauproject.placepick.model.repository.BoardRepository
@@ -43,6 +44,14 @@ class BoardFragment: BaseFragment<FragmentBoardBinding>() {
 
         viewModel.placeState.observe(viewLifecycleOwner, Observer {
             boardAdapter.updateState(it)
+        })
+
+        viewModel.serverError.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(requireView(), "서버와의 연결이 원활하지 않습니다: Error code: $it", Snackbar.LENGTH_SHORT).show()
+        })
+
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(requireView(), "Error: $it", Snackbar.LENGTH_SHORT).show()
         })
 
         binding.rvBoard.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

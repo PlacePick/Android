@@ -32,13 +32,19 @@ class BoardDetailFragment(): BaseFragment<FragmentBoardDetailBinding>() {
 
         viewModel.getDetailList() // 게시판 내용 가져오기
 
+        // 게시판 내용 업데이트 감지
         viewModel.detailList.observe(viewLifecycleOwner, Observer {
-            boardDetailAdapter.updateList(it) // 게시판 내용 업데이트 감지
-        })
-        viewModel.board.observe(viewLifecycleOwner, Observer {
-            binding.tvBoardTitle.text = it // 게시판 이름 설정
+            boardDetailAdapter.updateList(it)
         })
 
+
+
+        // 게시판 이름 설정
+        viewModel.board.observe(viewLifecycleOwner, Observer {
+            binding.tvBoardTitle.text = it
+        })
+
+        // 글쓰기
         binding.tvBtnWrite.setOnClickListener {
             FragmentUtil.showFragment(requireActivity().supportFragmentManager, BoardDetailPostFragment(), BoardDetailPostFragment.TAG)
         }
