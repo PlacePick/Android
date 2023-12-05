@@ -47,11 +47,11 @@ class MainViewModel(
     val commentList: LiveData<List<Comment>>
         get() = _commentList
 
-    private val _serverError = MutableLiveData(0)
+    private val _serverError = MutableLiveData<Int>()
     val serverError: LiveData<Int>
         get() = _serverError
 
-    private val _error = MutableLiveData("")
+    private val _error = MutableLiveData<String>()
     val error: LiveData<String>
         get() = _error
 
