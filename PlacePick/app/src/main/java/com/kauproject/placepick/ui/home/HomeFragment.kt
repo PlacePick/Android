@@ -42,17 +42,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             btnChoice3.text = userData.place3 ?: ""
 
             btnChoice1.setOnClickListener {
-                loadHotPlaceButton(btnChoice1.text.toString(), userData.place1 ?: "")
+                loadHotPlaceButton(btnChoice1.text.toString())
                 onButtonClicked(btnChoice1, userData.place1 ?: "")
             }
 
             btnChoice2.setOnClickListener {
-                loadHotPlaceButton(btnChoice2.text.toString(), userData.place2 ?: "")
+                loadHotPlaceButton(btnChoice2.text.toString())
                 onButtonClicked(btnChoice2, userData.place2 ?: "")
             }
 
             btnChoice3.setOnClickListener {
-                loadHotPlaceButton(btnChoice3.text.toString(), userData.place3 ?: "")
+                loadHotPlaceButton(btnChoice3.text.toString())
                 onButtonClicked(btnChoice3, userData.place3 ?: "")
             }
 
@@ -66,7 +66,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
                 if (selectedPlace.isNotEmpty()) {
                     setSelectedPlaceButton(selectedPlace)
-                    val chatFragment = ChatFragment.newInstance(selectedPlace, selectedPlace)
+                    val chatFragment = ChatFragment.newInstance(selectedPlace)
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.fl_main, chatFragment)
                         .commit()
@@ -79,7 +79,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         viewModel.selectedPlace.observe(viewLifecycleOwner) { selectedPlace ->
             binding.btnRealtimeInput.text = selectedPlace
-            loadHotPlaceButton(selectedPlace, selectedPlace)
+            loadHotPlaceButton(selectedPlace)
         }
 
 
@@ -88,7 +88,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
 
-    private fun loadHotPlaceButton(selectedPlace: String, placeData: String) {
+    private fun loadHotPlaceButton(selectedPlace: String) {
         lifecycleScope.launch {
             viewModel.loadHotPlaceInfo(selectedPlace)
         }
@@ -244,3 +244,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
 }
+
